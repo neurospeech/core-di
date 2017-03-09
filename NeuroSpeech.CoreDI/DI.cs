@@ -20,6 +20,16 @@ namespace NeuroSpeech.CoreDI
 
 
         /// <summary>
+        /// Clears everything...
+        /// Only for testing...
+        /// </summary>
+        public static void Clear() {
+            descriptors.Clear();
+            globalInstances.Clear();
+        }
+
+
+        /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="TAbstract"></typeparam>
@@ -124,11 +134,11 @@ namespace NeuroSpeech.CoreDI
             ServiceDescriptor sd;
             while (!descriptors.TryGetValue(type, out sd))
             {
-                if (sd.BaseType == type)
+                if (sd?.BaseType == type)
                 {
                     break;
                 }
-                type = type.BaseType;
+                type = type?.BaseType;
                 if (type == null)
                     return null;
             }

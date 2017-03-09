@@ -45,7 +45,7 @@ namespace NeuroSpeech.CoreDI
                     case LifeTime.Scoped:
                         factory = s => {
                             if (s == null)
-                                throw new ArgumentException($"scope cannot be null");
+                                throw new ArgumentNullException($"scope cannot be null");
                             return s.Get(Implementor);
                         };
                         break;
