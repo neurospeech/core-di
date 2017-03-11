@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -93,7 +94,7 @@ namespace NeuroSpeech.CoreDI
         {
 
             if (typeImpl != baseType &&
-                !baseType.IsAssignableFrom(typeImpl))
+                !baseType.GetTypeInfo().IsAssignableFrom(typeImpl.GetTypeInfo()))
                 throw new ArgumentException($"Type {typeImpl.FullName} must inherit or implement {baseType.FullName}");
 
             if (lifeTime == LifeTime.Global)
@@ -138,7 +139,7 @@ namespace NeuroSpeech.CoreDI
                 {
                     break;
                 }
-                type = type?.BaseType;
+                type = type?.GetTypeInfo()?.BaseType;
                 if (type == null)
                     return null;
             }
@@ -164,7 +165,7 @@ namespace NeuroSpeech.CoreDI
 
                 // get public constructor...
                 // should only be one...
-                var first = implementor.GetConstructors(System.Reflection.BindingFlags.Public).FirstOrDefault();
+                var first = implementor.GetTypeInfo().DeclaredConstructors.FirstOrDefault(x=>x.IsPublic);
 
                 if (first == null)
                 {
