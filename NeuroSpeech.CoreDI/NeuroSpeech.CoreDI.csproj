@@ -5,12 +5,18 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Copyright>2017</Copyright>
     <Version>1.0.4</Version>
+    <PostBuildEvent></PostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
-  
-  
+
+
+  <Target Name="PublishPackage" AfterTargets="Pack">
+    <Exec WorkingDirectory="$(TargetDir)" Command="$(SolutionDir)\NuGet.exe push -Source https://www.nuget.org/api/v2/package $(TargetDir)..\*.nupkg">
+      <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
+    </Exec>
+  </Target>
 
 </Project>
