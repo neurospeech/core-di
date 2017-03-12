@@ -121,6 +121,25 @@ namespace NeuroSpeech.CoreDI
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="factory"></param>
+        /// <param name="overrideExisting"></param>
+        public static void RegisterGlobal<T>(Func<T> factory, bool overrideExisting = false) {
+            Type type = typeof(T);
+            var sd = GetFactory(type);
+            if (sd != null) {
+                if (!overrideExisting)
+                    throw new ArgumentException($"Type {type} is already registered");
+            }
+            var value = factory();
+            Register(type, value.GetType(), LifeTime.Global);
+            globalInstances[type] = value;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="factory"></param>
         public static void GlobalOverride<T>(Func<T> factory) {
             globalInstances[typeof(T)] = factory();
         }

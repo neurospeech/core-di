@@ -4,7 +4,7 @@
     <TargetFramework>netstandard1.4</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Copyright>2017</Copyright>
-    <Version>1.0.8</Version>
+    <Version>1.0.9</Version>
     <PostBuildEvent></PostBuildEvent>
     <PackageProjectUrl>https://github.com/neurospeech/core-di</PackageProjectUrl>
     <RepositoryUrl>https://github.com/neurospeech/core-di</RepositoryUrl>
@@ -14,6 +14,7 @@
     <Company>NeuroSpeech Technologies Pvt Ltd</Company>
     <Authors>Akash Kava</Authors>
     <Description>Small dependency injection for .NET Standard</Description>
+    <PackageReleaseNotes>Added support for registering global instance</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
