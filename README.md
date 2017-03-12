@@ -3,8 +3,6 @@ Core dependency injection for .NET
 
 ## Why CoreDI?
 
-Compact, small and lightweight, so there are others. CoreDI does not recommend constructor injection pattern and implements best of many frameworks.
-
 1. Support for type registration with Attributes
 2. Clean and verbose error messages
 3. Fully customizable scopes, you can create nested scopes
