@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -50,6 +51,61 @@ namespace NeuroSpeech.CoreDI
 
 
         /// <summary>
+        /// Register all types declared in given assembly with DIGlobal, DIScoped and DIAlwaysNew attributes
+        /// </summary>
+        /// <param name="assembly"></param>
+        public static void Register(Assembly assembly) {
+
+            foreach (var type in assembly.DefinedTypes
+                .Select(x => new
+                {
+                    Type = x.AsType(),
+                    DIAttribute = x.GetCustomAttribute<DIAttribute>()
+                }).Where(x => x.DIAttribute != null)) {
+                switch (type.DIAttribute) {
+                    case DIGlobalAttribute d:
+                        Register(d.Type ?? type.Type, type.Type, LifeTime.Global);
+                        break;
+                    case DIScopedAttribute d:
+                        Register(d.Type ?? type.Type, type.Type, LifeTime.Scoped);
+                        break;
+                    case DIAlwaysNewAttribute d:
+                        Register(d.Type ?? type.Type, type.Type, LifeTime.AlwaysNew);
+                        break;
+                }
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public static void RegisterGlobal<T>() {
+            RegisterGlobal<T, T>();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public static void RegisterScoped<T>()
+        {
+            RegisterScoped<T, T>();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public static void RegisterAlwaysNew<T>()
+        {
+            RegisterAlwaysNew<T, T>();
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="TAbstract"></typeparam>
@@ -58,6 +114,17 @@ namespace NeuroSpeech.CoreDI
         {
             Register(typeof(TAbstract), typeof(TImpl), LifeTime.Global);
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="factory"></param>
+        public static void GlobalOverride<T>(Func<T> factory) {
+            globalInstances[typeof(T)] = factory();
+        }
+
 
         /// <summary>
         /// 
@@ -93,7 +160,7 @@ namespace NeuroSpeech.CoreDI
         {
 
             if (typeImpl != baseType &&
-                !baseType.IsAssignableFrom(typeImpl))
+                !baseType.GetTypeInfo().IsAssignableFrom(typeImpl.GetTypeInfo()))
                 throw new ArgumentException($"Type {typeImpl.FullName} must inherit or implement {baseType.FullName}");
 
             if (lifeTime == LifeTime.Global)
@@ -138,7 +205,7 @@ namespace NeuroSpeech.CoreDI
                 {
                     break;
                 }
-                type = type?.BaseType;
+                type = type?.GetTypeInfo()?.BaseType;
                 if (type == null)
                     return null;
             }
@@ -164,7 +231,7 @@ namespace NeuroSpeech.CoreDI
 
                 // get public constructor...
                 // should only be one...
-                var first = implementor.GetConstructors(System.Reflection.BindingFlags.Public).FirstOrDefault();
+                var first = implementor.GetTypeInfo().DeclaredConstructors.FirstOrDefault(x=>x.IsPublic);
 
                 if (first == null)
                 {
