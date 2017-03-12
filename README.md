@@ -64,16 +64,22 @@ Compact, small and lightweight, so there are others. CoreDI does not recommend c
 
         DI.Get<AppDbContext>(); // error no scope...
 
-        var scope = DI.NewScope();
+        using(var scope = DI.NewScope()){
 
-        var db = DI.Get<AppDbContext>(scope);
+			var db = DI.Get<AppDbContext>(scope);
 
 
-        var childScope = DI.NewScope(scope);
+			var childScope = DI.NewScope(scope);
 
-        var childDb = DI.Get<AppDbContext>(childScope);
+			var childDb = DI.Get<AppDbContext>(childScope);
 
-        Assert.NotEqual(db,childDb);
+			Assert.NotEqual(db,childDb);
+
+			// disposing scope will 
+			// dispose all child scope
+			// as well as all disposable object
+			// inside scope and child scope
+		}
 
 
 # License
