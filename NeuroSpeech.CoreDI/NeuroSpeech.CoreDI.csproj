@@ -4,7 +4,7 @@
     <TargetFramework>netstandard1.4</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Copyright>2017</Copyright>
-    <Version>1.0.4</Version>
+    <Version>1.0.6</Version>
     <PostBuildEvent></PostBuildEvent>
   </PropertyGroup>
 
@@ -14,7 +14,7 @@
 
 
   <Target Name="PublishPackage" AfterTargets="Pack">
-    <Exec WorkingDirectory="$(TargetDir)" Command="$(SolutionDir)\NuGet.exe push -Source https://www.nuget.org/api/v2/package $(TargetDir)..\*.nupkg">
+    <Exec WorkingDirectory="$(TargetDir)" Command="$(SolutionDir)\NuGet.exe push -Source https://api.nuget.org/v3/index.json $(TargetDir)..\$(PackageId).$(PackageVersion).nupkg">
       <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
     </Exec>
   </Target>
