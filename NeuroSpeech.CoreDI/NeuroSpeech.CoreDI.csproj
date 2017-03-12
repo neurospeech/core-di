@@ -4,8 +4,16 @@
     <TargetFramework>netstandard1.4</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Copyright>2017</Copyright>
-    <Version>1.0.6</Version>
+    <Version>1.0.8</Version>
     <PostBuildEvent></PostBuildEvent>
+    <PackageProjectUrl>https://github.com/neurospeech/core-di</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/neurospeech/core-di</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>Dependency Injection</PackageTags>
+    <PackageLicenseUrl>https://github.com/neurospeech/core-di/blob/master/LICENSE</PackageLicenseUrl>
+    <Company>NeuroSpeech Technologies Pvt Ltd</Company>
+    <Authors>Akash Kava</Authors>
+    <Description>Small dependency injection for .NET Standard</Description>
   </PropertyGroup>
 
   <ItemGroup>
