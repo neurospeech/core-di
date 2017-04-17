@@ -42,8 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DI.cs" />
+    <Compile Include="DIAlwaysNewAttribute.cs" />
+    <Compile Include="DIAttribute.cs" />
     <Compile Include="DictionaryExtensions.cs" />
+    <Compile Include="DIGlobalAttribute.cs" />
     <Compile Include="DIScope.cs" />
+    <Compile Include="DIScopedAttribute.cs" />
     <Compile Include="LifeTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceDescriptor.cs" />
