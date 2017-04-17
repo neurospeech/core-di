@@ -9,8 +9,20 @@ using System.Threading.Tasks;
 namespace NeuroSpeech.CoreDI
 {
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.IDisposable" />
     public class DIScope : IDisposable
     {
+
+        /// <summary>
+        /// You can set name to identify scope
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public string Name { get; set; }
 
         private ConcurrentDictionary<Type, object> items = new ConcurrentDictionary<Type, object>();
 
@@ -29,8 +41,16 @@ namespace NeuroSpeech.CoreDI
             return items.GetOrAddLocked(type, t => DI.New(this, type));
         }
 
-        public void Dispose()
-        {
+        public object this[Type type] {
+            get {
+                return Get(type);
+            }
+            set {
+                items[type] = value;
+            }
+        }
+
+        public void Clear() {
             foreach (var child in children)
             {
                 child.Dispose();
@@ -42,6 +62,17 @@ namespace NeuroSpeech.CoreDI
                 id?.Dispose();
             }
             items.Clear();
+
+        }
+
+        public void Dispose()
+        {
+            Clear();
+        }
+
+        internal bool ContainsKey(Type typeImpl)
+        {
+            return items.ContainsKey(typeImpl);
         }
     }
 

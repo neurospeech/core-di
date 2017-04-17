@@ -50,7 +50,7 @@ namespace NeuroSpeech.CoreDI
                         };
                         break;
                     case LifeTime.Global:
-                        factory = s => DI.globalInstances.GetOrAddLocked(Implementor, k => DI.New(scope, Implementor));
+                        factory = s => DI.Global.Get(Implementor);
                         break;
                 }
             }

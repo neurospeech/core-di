@@ -15,8 +15,11 @@ namespace NeuroSpeech.CoreDI
     public class DI
     {
 
+        public static DIScope Global = new DIScope();
+
+
         private static Dictionary<Type, ServiceDescriptor> descriptors = new Dictionary<Type, ServiceDescriptor>();
-        internal static ConcurrentDictionary<Type, object> globalInstances = new ConcurrentDictionary<Type, object>();
+        //internal static ConcurrentDictionary<Type, object> globalInstances = new ConcurrentDictionary<Type, object>();
 
 
         /// <summary>
@@ -25,7 +28,8 @@ namespace NeuroSpeech.CoreDI
         /// </summary>
         public static void Clear() {
             descriptors.Clear();
-            globalInstances.Clear();
+            //globalInstances.Clear();
+            Global.Clear();
         }
 
 
@@ -37,9 +41,12 @@ namespace NeuroSpeech.CoreDI
         /// <param name="data"></param>
         public static void ReplaceGlobal<TAbstract, TImpl>(TAbstract data)
         {
-            object v;
-            globalInstances.TryRemove(typeof(TImpl), out v);
-            globalInstances[typeof(TImpl)] = data;
+            //object v;
+            //globalInstances.TryRemove(typeof(TImpl), out v);
+            //globalInstances[typeof(TImpl)] = data;
+
+            Global[typeof(TImpl)] = data;
+
             descriptors[typeof(TAbstract)] = new CoreDI.ServiceDescriptor
             {
                 BaseType = typeof(TAbstract),
@@ -86,7 +93,7 @@ namespace NeuroSpeech.CoreDI
         /// <returns></returns>
         public static DIScope NewScope(DIScope parent = null)
         {
-            return new CoreDI.DIScope(parent);
+            return new CoreDI.DIScope(parent ?? Global);
         }
 
         private static void Register(Type baseType, Type typeImpl, LifeTime lifeTime)
@@ -98,7 +105,7 @@ namespace NeuroSpeech.CoreDI
 
             if (lifeTime == LifeTime.Global)
             {
-                if (globalInstances.ContainsKey(typeImpl))
+                if (Global.ContainsKey(typeImpl))
                     throw new ArgumentException($"Global instance of {typeImpl.FullName} already exists, cannot register again");
             }
 
