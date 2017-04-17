@@ -26,6 +26,8 @@ namespace NeuroSpeech.CoreDI
 
         private ConcurrentDictionary<Type, object> items = new ConcurrentDictionary<Type, object>();
 
+        private List<IDisposable> disposables;
+
         public DIScope Parent { get; private set; }
 
         private List<DIScope> children = new List<DIScope>();
@@ -56,13 +58,22 @@ namespace NeuroSpeech.CoreDI
                 child.Dispose();
             }
             children.Clear();
-            foreach (var value in items.Values)
-            {
-                var id = value as IDisposable;
-                id?.Dispose();
-            }
             items.Clear();
-
+            if (disposables != null)
+            {
+                foreach (var d in disposables)
+                {
+                    try
+                    {
+                        d.Dispose();
+                    }
+                    catch (Exception ex){
+                        System.Diagnostics.Debug.WriteLine("Object Dispose Warning !! " + ex.ToString());
+                    }
+                }
+                disposables.Clear();
+                disposables = null;
+            }
         }
 
         public void Dispose()
@@ -73,6 +84,15 @@ namespace NeuroSpeech.CoreDI
         internal bool ContainsKey(Type typeImpl)
         {
             return items.ContainsKey(typeImpl);
+        }
+
+        internal object RegisterDisposable(object v)
+        {
+            if (v is IDisposable d) {
+                var dl = (disposables ?? (disposables = new List<IDisposable>()));
+                dl.Add(d);
+            }
+            return v;
         }
     }
 

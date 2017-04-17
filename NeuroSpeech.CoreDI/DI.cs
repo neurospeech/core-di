@@ -203,7 +203,7 @@ namespace NeuroSpeech.CoreDI
             return (T)sd.Get(scope);
         }
 
-        private static ServiceDescriptor GetFactory(Type type)
+        public static ServiceDescriptor GetFactory(Type type)
         {
 
             ServiceDescriptor sd;
@@ -232,6 +232,8 @@ namespace NeuroSpeech.CoreDI
         /// <returns></returns>
         public static object New(DIScope scope, Type implementor)
         {
+            scope = scope ?? Global;
+
             var f = factories.GetOrAdd(implementor, i =>
             {
 
@@ -271,7 +273,7 @@ namespace NeuroSpeech.CoreDI
                 Expression call = Expression.New(first, args);
                 return Expression.Lambda<Func<DIScope, object>>(call, sp).Compile();
             });
-            return f(scope);
+            return scope.RegisterDisposable( f(scope));
         }
     }
 
