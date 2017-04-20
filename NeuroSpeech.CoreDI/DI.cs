@@ -203,6 +203,19 @@ namespace NeuroSpeech.CoreDI
             return (T)sd.Get(scope);
         }
 
+
+
+        /// <summary>
+        /// Resolves the factory.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static Func<DIScope,T> ResolveFactory<T>() {
+            var f = GetFactory(typeof(T)).Factory;
+            return s => (T)(object)f(s);
+        }
+
+
         public static ServiceDescriptor GetFactory(Type type)
         {
 

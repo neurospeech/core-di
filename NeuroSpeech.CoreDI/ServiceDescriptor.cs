@@ -33,28 +33,33 @@ namespace NeuroSpeech.CoreDI
 
 
         private Func<DIScope, object> factory = null;
+        public Func<DIScope, object> Factory {
+            get {
+                if (factory == null)
+                {
+                    switch (LifeTime)
+                    {
+                        case LifeTime.AlwaysNew:
+                            factory = s => DI.New(s, Implementor);
+                            break;
+                        case LifeTime.Scoped:
+                            factory = s => {
+                                if (s == null)
+                                    throw new ArgumentNullException($"scope cannot be null");
+                                return s.Get(Implementor);
+                            };
+                            break;
+                        case LifeTime.Global:
+                            factory = s => DI.Global.Get(Implementor);
+                            break;
+                    }
+                }
+                return factory;
+            }
+        }
         public Object Get(DIScope scope)
         {
-            if (factory == null)
-            {
-                switch (LifeTime)
-                {
-                    case LifeTime.AlwaysNew:
-                        factory = s => DI.New(scope, Implementor);
-                        break;
-                    case LifeTime.Scoped:
-                        factory = s => {
-                            if (s == null)
-                                throw new ArgumentNullException($"scope cannot be null");
-                            return s.Get(Implementor);
-                        };
-                        break;
-                    case LifeTime.Global:
-                        factory = s => DI.Global.Get(Implementor);
-                        break;
-                }
-            }
-            return factory(scope);
+            return Factory(scope);
         }
 
 
