@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>NeuroSpeech.CoreDI</id>
+    <version>$version$</version>
+    <title>NeuroSpeech.CoreDI</title>
+    <authors>akash.kava</authors>
+    <owners></owners>
+    <description>
+      Simple and small Dependency Injection for .NET
+    </description>
+    <releaseNotes>
+    </releaseNotes>
+    <summary>
+      Simple and small Dependency Injection for .NET
+    </summary>
+    <language>en-US</language>
+    <projectUrl>https://nuget.org/packages/NeuroSpeech.CoreDI.NuGet</projectUrl>
+    <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <copyright>Copyright  2017</copyright>
+    <dependencies>
+    </dependencies>
+    <references></references>
+    <tags></tags>
+  </metadata>
+  <files>
+    <file src="bin\Debug\NeuroSpeech.CoreDI.dll" target="lib" />
+    <file src="bin\Debug\NeuroSpeech.CoreDI.pdb" target="lib" />
+  </files>
+</package>

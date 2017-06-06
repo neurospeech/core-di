@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuroSpeech.CoreDI", "Neuro
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{66F886F5-5206-44E2-B2F1-33CB87016CFB}"
 	ProjectSection(SolutionItems) = preProject
+		NeuroSpeech.CoreDI\NeuroSpeech.CoreDI.nuspec = NeuroSpeech.CoreDI\NeuroSpeech.CoreDI.nuspec
 		README.md = README.md
 	EndProjectSection
 EndProject
